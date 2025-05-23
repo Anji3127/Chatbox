@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Tools Chatbot</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #f8bbd0, #b0bec5); /* Light Pink and Grey */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+    .chatbot {
+      @media only screen and (max-width: 600px) {
+        width: 300px;
+        height: 500px;
+    }      
+      width: 400px;
+      height: 600px;
+      background: #fff;
+      border-radius: 25px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      animation: slideIn 1s ease forwards;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .chatbot:hover {
+      transform: scale(1.02);
+    }
+    .chat-header {
+      background: #1e88e5;
+      color: white;
+      padding: 18px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+    }
+    .chat-body {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      background: #f5f7fa;
+    }
+    .chat-message {
+      margin: 8px 0;
+      padding: 12px 18px;
+      border-radius: 20px;
+      max-width: 75%;
+      word-wrap: break-word;
+      transition: background 0.3s ease, transform 0.3s ease;
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .chat-message:hover {
+      background-color: #e0e0e0;
+      transform: scale(1.02);
+    }
+    .user-message {
+      background-color: #d1f2eb;
+      align-self: flex-end;
+    }
+    .bot-message {
+      background-color: #e3f2fd;
+      align-self: flex-start;
+    }
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ccc;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+    }
+    .chat-input button {
+      background: #1e88e5;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .chat-input button:hover {
+      background: #1565c0;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="chatbot">
+    <div class="chat-header">DLC Digital Tools Helper 🤖</div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="Ask me anything..." />
+      <button onclick="handleUserInput()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const faqData = {
+      "how do i send a photo on whatsapp": "1. Open WhatsApp.\n2. Go to the chat you want to send the photo to.\n3. Tap the paperclip 📎 icon.\n4. Choose 'Gallery'.\n5. Select the photo.\n6. Tap the send button.",
+      "how to use google maps to navigate": "1. Open Google Maps.\n2. Enter your destination in the search bar.\n3. Tap 'Directions'.\n4. Choose your mode of transport (car, bike, walk, etc).\n5. Tap 'Start' to begin navigation.",
+      "how to send money using paytm": "1. Open Paytm.\n2. Tap on 'Pay' or 'Send Money'.\n3. Enter the mobile number or scan the QR code.\n4. Enter the amount.\n5. Tap 'Send'.",
+      "what is google pay": "Google Pay is a digital wallet and payment app by Google. It allows you to send and receive money, pay bills, and make purchases directly from your mobile phone."
+    };
+
+    function handleUserInput() {
+      const inputElem = document.getElementById("userInput");
+      const chatBody = document.getElementById("chatBody");
+      const query = inputElem.value.trim();
+      if (!query) return;
+
+      appendMessage(query, "user-message");
+      inputElem.value = "";
+
+      setTimeout(() => {
+        const lowerQuery = query.toLowerCase();
+        const response = faqData[lowerQuery] ||
+          "Sorry, I don’t have that information yet. Try asking about WhatsApp, Paytm, or Google Maps.";
+        appendMessage(response, "bot-message");
+      }, 500);
+    }
+
+    function appendMessage(message, className) {
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `chat-message ${className}`;
+      messageDiv.innerText = message;
+      const chatBody = document.getElementById("chatBody");
+      chatBody.appendChild(messageDiv);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  </script>
+</body>
+</html>
